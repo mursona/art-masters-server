@@ -17,12 +17,19 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 
 async function run() {
     try {
-        const serviceCollection = client.db('artMasters').collection('services');
+        const serviceCollection = client.db('artMaster').collection('services');
         app.get('/services', async (req, res) => {
             const query = {}
             const cursor = serviceCollection.find(query);
-            const services = await cursor.toArray();
+            const services = await cursor.limit(3).toArray();
             res.send(services);
+        });
+
+        app.get('/allservice', async (req, res) => {
+            const query = {}
+            const cursor = serviceCollection.find(query);
+            const allservice = await cursor.toArray();
+            res.send(allservice);
         });
 
         app.get('/services/:id', async (req, res) => {
