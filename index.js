@@ -87,7 +87,7 @@ async function run() {
                 }
             }
 
-            const cursor = reviewCollection.find(query);
+            const cursor = reviewCollection.find(query,{time:1,_id:0}).sort({"time":-1});
             const reviews = await cursor.toArray();
             res.send(reviews);
         });
