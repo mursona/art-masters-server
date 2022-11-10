@@ -21,7 +21,7 @@ async function run() {
         const reviewCollection = client.db('artMaster').collection('reviews');
         app.get('/services', async (req, res) => {
             const query = {}
-            const cursor = serviceCollection.find(query);
+            const cursor = serviceCollection.find(query, {_id:1,_id:0}).sort({"_id":-1});
             const services = await cursor.limit(3).toArray();
             res.send(services);
         });
@@ -34,7 +34,7 @@ async function run() {
 
         app.get('/allservice', async (req, res) => {
             const query = {}
-            const cursor = serviceCollection.find(query);
+            const cursor = serviceCollection.find(query, {_id:1,_id:0}).sort({"_id":-1});
             const allservice = await cursor.toArray();
             res.send(allservice);
         });
