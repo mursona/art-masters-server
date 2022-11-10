@@ -25,6 +25,12 @@ async function run() {
             const services = await cursor.limit(3).toArray();
             res.send(services);
         });
+        
+        app.post('/services', async (req, res) => {
+            const services = req.body;
+            const result = await serviceCollection.insertOne(services);
+            res.send(result);
+        });
 
         app.get('/allservice', async (req, res) => {
             const query = {}
@@ -38,6 +44,21 @@ async function run() {
             const query = {_id: ObjectId(id)};
             const service = await serviceCollection.findOne(query);
             res.send(service);
+        });
+
+        // review api
+        app.get('/reviews', async (req, res) => {
+            let query = {};
+
+            if (req.query.email) {
+                query = {
+                    email: req.query.email
+                }
+            }
+
+            const cursor = reviewCollection.find(query);
+            const reviews = await cursor.toArray();
+            res.send(reviews);
         });
 
         app.post('/reviews', async (req, res) => {
@@ -57,9 +78,9 @@ run().catch(err => console.error(err));
 
 
 app.get('/', (req, res) => {
-    res.send('genius car server is running')
+    res.send('Art Masters server is running')
 })
 
 app.listen(port, () => {
-    console.log(`Genius Car server running on ${port}`);
+    console.log(`Art Masters server running on ${port}`);
 })
